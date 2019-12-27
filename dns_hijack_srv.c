@@ -17,7 +17,7 @@
 
 static const char *TAG = "dns_hijack_srv";
 
-static ip4_addr_t hijack_ip_addr;
+static ip4_addr_t _resolve_ip_addr;
 static TaskHandle_t dns_hijack_srv_task_handle;
 
 static void dns_hijack_srv_task(void *pvParameters) {
@@ -100,7 +100,7 @@ static void dns_hijack_srv_task(void *pvParameters) {
             answer->CLASS    = __bswap_16(1);
             answer->TTL      = 0;
             answer->RDLENGTH = __bswap_16(4);
-            answer->RDATA    = hijack_ip_addr.addr;
+            answer->RDATA    = _resolve_ip_addr.addr;
 
             // Jump over ANSWER
             ptr += sizeof(dns_hijack_answer_t);
@@ -123,18 +123,18 @@ static void dns_hijack_srv_task(void *pvParameters) {
     dns_hijack_srv_stop();
 }
 
-esp_err_t dns_hijack_srv_start(const ip4_addr_t hijack_ip) {
+esp_err_t dns_hijack_srv_start(const ip4_addr_t resolve_ip_addr) {
     if(dns_hijack_srv_task_handle != NULL) {
         return ESP_OK;
     }
 
-    hijack_ip_addr = hijack_ip;
-
-	ESP_LOGI(TAG, "Hijack ip: "IPSTR, 
-        ip4_addr1(&hijack_ip_addr),
-        ip4_addr2(&hijack_ip_addr), 
-        ip4_addr3(&hijack_ip_addr),
-        ip4_addr4(&hijack_ip_addr));
+    _resolve_ip_addr = resolve_ip_addr;
+    
+    ESP_LOGI(TAG, "Resolve IP: "IPSTR, 
+        ip4_addr1(&_resolve_ip_addr),
+        ip4_addr2(&_resolve_ip_addr), 
+        ip4_addr3(&_resolve_ip_addr),
+        ip4_addr4(&_resolve_ip_addr));
 
     xTaskCreate(dns_hijack_srv_task, "dns_hijack_srv", 4096, NULL, 5, &dns_hijack_srv_task_handle);
     return ESP_OK;

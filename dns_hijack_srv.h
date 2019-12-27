@@ -40,7 +40,7 @@ typedef struct __attribute__((packed)) dns_hijack_answer_t {
 	uint32_t RDATA;
 } dns_hijack_answer_t;
 
-esp_err_t dns_hijack_srv_start(const ip4_addr_t hijack_ip);
+esp_err_t dns_hijack_srv_start(const ip4_addr_t resolve_ip_addr);
 esp_err_t dns_hijack_srv_stop();
 
 #ifdef __cplusplus
