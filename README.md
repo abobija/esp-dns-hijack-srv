@@ -1,2 +1,17 @@
 # esp32-dns-hijack-srv
 DNS Hijack Server, packaged as ESP-IDF component
+
+# How to use
+
+Example
+
+```C
+ip4_addr_t hijack_ip;
+inet_pton(AF_INET, "192.168.4.1", &hijack_ip);
+
+if(dns_hijack_srv_start(hijack_ip) == ESP_OK) {
+    ESP_LOGI(TAG, "DNS hijack server started");
+} else {
+    ESP_LOGE(TAG, "DNS hijack server has not started");
+}
+```
