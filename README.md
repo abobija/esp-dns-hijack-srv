@@ -1,9 +1,11 @@
 # esp32-dns-hijack-srv
 DNS Hijack Server, packaged as ESP-IDF component
 
-# How to use
+## How to use
 
-Example
+This directory is an ESP-IDF component. Clone it (or add it as submodule) into `components` directory of the project.
+
+## Example
 
 ```C
 ip4_addr_t hijack_ip;
