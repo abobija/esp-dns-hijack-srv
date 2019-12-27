@@ -9,7 +9,7 @@ This directory is an ESP-IDF component. Clone it (or add it as submodule) into `
 
 ## Example
 
-In this example all requested domains will be redirected to the IP address 192.168.4.1
+In this example all requested domains will be forwarded to the IP address 192.168.4.1
 
 ```C
 ip4_addr_t resolve_ip;
