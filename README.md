@@ -1,4 +1,4 @@
-# dns-hijack-srv
+# esp-dns-hijack-srv
 Esp32 [DNS Hijack](https://en.wikipedia.org/wiki/DNS_hijacking) Server, packaged as ESP-IDF component.
 
 This is simple DNS server that resolves all requested domains to one IP address. Handy for use to open [Captive Portal](https://en.wikipedia.org/wiki/Captive_portal).
