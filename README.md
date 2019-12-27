@@ -1,5 +1,5 @@
-# esp32-dns-hijack-srv
-DNS Hijack Server, packaged as ESP-IDF component
+# dns-hijack-srv
+Esp32 DNS Hijack Server, packaged as ESP-IDF component
 
 ## How to use
 
