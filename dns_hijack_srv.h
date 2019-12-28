@@ -16,7 +16,7 @@ extern "C" {
 #define DNS_HIJACK_SRV_HEADER_SIZE           12
 #define DNS_HIJACK_SRV_QUESTION_MAX_LENGTH   50
 
-typedef struct dns_hijack_srv_handle_data_t {
+typedef struct dns_hijack_srv_handle_t {
 	TaskHandle_t task_handle;
 	int sockfd;
 	ip4_addr_t resolve_ip;
