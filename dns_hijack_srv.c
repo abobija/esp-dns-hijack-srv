@@ -112,6 +112,8 @@ static void dns_hijack_srv_task(void *pvParameters) {
                 ESP_LOGE(TAG, "Error occurred during sending");
                 break;
             }
+
+            taskYIELD();
         }
 
         if(sock != -1) {
