@@ -11,9 +11,15 @@ extern "C" {
 
 #include <stdint.h>
 #include "esp_err.h"
+#include "freertos/task.h"
 
 #define DNS_HIJACK_SRV_HEADER_SIZE           12
 #define DNS_HIJACK_SRV_QUESTION_MAX_LENGTH   50
+
+typedef struct dns_hijack_srv_handle_data_t {
+	TaskHandle_t task_handle;
+	int sockfd;
+} dns_hijack_srv_handle_t;
 
 typedef struct __attribute__((packed)) dns_header_t {
 	uint16_t ID;

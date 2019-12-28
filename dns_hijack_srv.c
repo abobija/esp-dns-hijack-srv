@@ -18,7 +18,9 @@
 static const char *TAG = "dns_hijack_srv";
 
 static ip4_addr_t _resolve_ip_addr;
-static TaskHandle_t dns_hijack_srv_task_handle;
+static dns_hijack_srv_handle_t dns_hijack_srv_handle;
+
+static esp_err_t dns_hijack_srv_cleanup();
 
 static void dns_hijack_srv_task(void *pvParameters) {
     uint8_t rx_buffer[128];
@@ -30,7 +32,7 @@ static void dns_hijack_srv_task(void *pvParameters) {
         dest_addr.sin_family = AF_INET;
         dest_addr.sin_port = htons(53);
 
-        int sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
+        int sock = dns_hijack_srv_handle.sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
 
         if(sock < 0) {
             ESP_LOGE(TAG, "Unable to create socket");
@@ -114,17 +116,29 @@ static void dns_hijack_srv_task(void *pvParameters) {
         }
 
         if(sock != -1) {
-            ESP_LOGI(TAG, "Shutting down socket and restarting...");
-            shutdown(sock, 0);
-            close(sock);
+            dns_hijack_srv_cleanup();
+            ESP_LOGI(TAG, "Restarting...");
         }
     }
 
     dns_hijack_srv_stop();
 }
 
+static esp_err_t dns_hijack_srv_cleanup() {
+    ESP_LOGI(TAG, "Cleanup");
+
+    if(dns_hijack_srv_handle.sockfd != -1) {
+        shutdown(dns_hijack_srv_handle.sockfd, 0);
+        close(dns_hijack_srv_handle.sockfd);
+
+        dns_hijack_srv_handle.sockfd = -1;
+    }
+
+    return ESP_OK;
+}
+
 esp_err_t dns_hijack_srv_start(const ip4_addr_t resolve_ip_addr) {
-    if(dns_hijack_srv_task_handle != NULL) {
+    if(dns_hijack_srv_handle.task_handle != NULL) {
         return ESP_OK;
     }
 
@@ -136,12 +150,18 @@ esp_err_t dns_hijack_srv_start(const ip4_addr_t resolve_ip_addr) {
         ip4_addr3(&_resolve_ip_addr),
         ip4_addr4(&_resolve_ip_addr));
 
-    xTaskCreate(dns_hijack_srv_task, "dns_hijack_srv", 4096, NULL, 5, &dns_hijack_srv_task_handle);
+    dns_hijack_srv_handle.sockfd = -1;
+
+    xTaskCreate(dns_hijack_srv_task, "dns_hijack_srv", 4096, NULL, 5, &dns_hijack_srv_handle.task_handle);
     return ESP_OK;
 }
 
 esp_err_t dns_hijack_srv_stop() {
-    vTaskDelete(dns_hijack_srv_task_handle);
-    dns_hijack_srv_task_handle = NULL;
+    vTaskDelete(dns_hijack_srv_handle.task_handle);
+    dns_hijack_srv_handle.task_handle = NULL;
+
+    dns_hijack_srv_cleanup();
+    ESP_LOGI(TAG, "Server stoped.");
+
     return ESP_OK;
 }
