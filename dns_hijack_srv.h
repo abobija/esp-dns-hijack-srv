@@ -19,6 +19,7 @@ extern "C" {
 typedef struct dns_hijack_srv_handle_data_t {
 	TaskHandle_t task_handle;
 	int sockfd;
+	ip4_addr_t resolve_ip;
 } dns_hijack_srv_handle_t;
 
 typedef struct __attribute__((packed)) dns_header_t {
