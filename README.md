@@ -3,6 +3,10 @@ Esp32 [DNS Hijack](https://en.wikipedia.org/wiki/DNS_hijacking) Server, packaged
 
 This is simple DNS server that resolves all lookups to one IP address. Handy for use to open [Captive Portal](https://en.wikipedia.org/wiki/Captive_portal).
 
+## Demo
+
+[![Esp32 DNS Hijacking](https://img.youtube.com/vi/d228X5A_bG4/mqdefault.jpg)](https://www.youtube.com/watch?v=d228X5A_bG4)
+
 ## How to use
 
 This directory is an ESP-IDF component. Clone it (or add it as submodule) into `components` directory of the project.
