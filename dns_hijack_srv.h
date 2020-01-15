@@ -11,7 +11,9 @@ extern "C" {
 
 #include <stdint.h>
 #include "esp_err.h"
+#include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
+#include <lwip/netdb.h>
 
 #define DNS_HIJACK_SRV_HEADER_SIZE           12
 #define DNS_HIJACK_SRV_QUESTION_MAX_LENGTH   50
